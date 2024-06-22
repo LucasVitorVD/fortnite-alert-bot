@@ -26,7 +26,18 @@ export class FortniteService {
         missionList.push(mission)
       })
   
-      return missionList
+      const message = new String()
+
+      message.concat(`**Alertas do dia: ${new Date().getDate()}\nTotal: ${missionList.length}**\n\n`)
+
+      missionList.forEach(mission => {
+        message.concat(`**Missão**: ${mission.getDetails}\n`)
+        message.concat(`**Zona**: ${mission.getZone}\n`)
+        message.concat(`**Level**: ${mission.getLevel}\n`)
+        message.concat(`**V-bucks**: ${mission.getReward}\n\n`)
+      })
+
+      return message
     } catch (err) {
       throw new Error(`Erro ao obter missões: ${err.message}`)
     }

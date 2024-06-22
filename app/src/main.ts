@@ -1,3 +1,3 @@
-import { FortniteService } from "./services/FortniteService";
+import { DiscordService } from "./services/DiscordService";
 
-console.log(FortniteService.getAlerts())
+DiscordService.startBot()

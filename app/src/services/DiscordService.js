@@ -36,55 +36,63 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FortniteService = void 0;
-var axios_1 = require("axios");
-var cheerio = require("cheerio");
-var Mission_1 = require("../entities/Mission");
-var FortniteService = /** @class */ (function () {
-    function FortniteService() {
+exports.DiscordService = void 0;
+var discord_js_1 = require("discord.js");
+var FortniteService_1 = require("./FortniteService");
+var dotenv_1 = require("dotenv");
+var DiscordService = /** @class */ (function () {
+    function DiscordService() {
     }
-    FortniteService.getAlerts = function () {
+    DiscordService.startBot = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var url, data, $_1, missionList_1, specialMissionElement, message_1, err_1;
+            var discordClient_1, err_1;
+            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        url = "https://stw-planner.com/mission-alerts";
-                        return [4 /*yield*/, axios_1.default.get(url)];
+                        (0, dotenv_1.config)();
+                        discordClient_1 = new discord_js_1.Client({
+                            intents: [
+                                discord_js_1.GatewayIntentBits.GuildMessages,
+                                discord_js_1.GatewayIntentBits.Guilds
+                            ]
+                        });
+                        discordClient_1.on('ready', function () { return __awaiter(_this, void 0, void 0, function () {
+                            var channel, alerts;
+                            var _a;
+                            return __generator(this, function (_b) {
+                                switch (_b.label) {
+                                    case 0:
+                                        console.log("Bot online");
+                                        channel = discordClient_1.channels.cache.get((_a = process.env.DISCORD_CHANNEL_ID) !== null && _a !== void 0 ? _a : "");
+                                        if (!(channel && channel.isTextBased())) return [3 /*break*/, 3];
+                                        return [4 /*yield*/, FortniteService_1.FortniteService.getAlerts()];
+                                    case 1:
+                                        alerts = _b.sent();
+                                        return [4 /*yield*/, channel.send("".concat(alerts))];
+                                    case 2:
+                                        _b.sent();
+                                        return [3 /*break*/, 4];
+                                    case 3:
+                                        console.error("O canal informado não é do tipo text channel");
+                                        _b.label = 4;
+                                    case 4: return [2 /*return*/];
+                                }
+                            });
+                        }); });
+                        return [4 /*yield*/, discordClient_1.login(process.env.DISCORD_TOKEN)];
                     case 1:
-                        data = (_a.sent()).data;
-                        $_1 = cheerio.load(data);
-                        missionList_1 = [];
-                        specialMissionElement = $_1(".special-reward-entry .mission-entry");
-                        if (specialMissionElement.length === 0) {
-                            throw new Error("Não há alertas hoje!");
-                        }
-                        specialMissionElement.each(function (index, element) {
-                            var details = $_1(element).find(".mission-entry .mission-details").text();
-                            var level = $_1(element).find(".mission-entry .special-overview").text();
-                            var zone = details.split(" - ")[1];
-                            var vbuckReward = $_1(element).find(".mission-rewards .mission-reward-name > .mission-reward-name").text();
-                            var mission = new Mission_1.Mission(details, level, zone, vbuckReward);
-                            missionList_1.push(mission);
-                        });
-                        message_1 = new String();
-                        message_1.concat("**Alertas do dia: ".concat(new Date().getDate(), "\nTotal: ").concat(missionList_1.length, "**\n\n"));
-                        missionList_1.forEach(function (mission) {
-                            message_1.concat("**Miss\u00E3o**: ".concat(mission.getDetails, "\n"));
-                            message_1.concat("**Zona**: ".concat(mission.getZone, "\n"));
-                            message_1.concat("**Level**: ".concat(mission.getLevel, "\n"));
-                            message_1.concat("**V-bucks**: ".concat(mission.getReward, "\n\n"));
-                        });
-                        return [2 /*return*/, message_1];
+                        _a.sent();
+                        return [3 /*break*/, 3];
                     case 2:
                         err_1 = _a.sent();
-                        throw new Error("Erro ao obter miss\u00F5es: ".concat(err_1.message));
+                        throw new Error(err_1);
                     case 3: return [2 /*return*/];
                 }
             });
         });
     };
-    return FortniteService;
+    return DiscordService;
 }());
-exports.FortniteService = FortniteService;
+exports.DiscordService = DiscordService;
