@@ -1,6 +1,7 @@
 import axios from "axios"
 import * as cheerio from "cheerio"
 import { Mission } from "../entities/Mission"
+import { formatDate } from "../utils/utils"
 
 export class FortniteService {
   static async getAlerts() {
@@ -16,26 +17,24 @@ export class FortniteService {
         throw new Error("Não há alertas hoje!")
       }
   
-      specialMissionElement.each((index, element) => {
-        const details = $(element).find(".mission-entry .mission-details").text();
-        const level = $(element).find(".mission-entry .special-overview").text();
+      specialMissionElement.each((_, element) => {
+        const details = $(element).find(".mission-entry .mission-details").text().replace(/\n/g, '');
+        const level = $(element).find(".mission-entry .special-overview").text().replace(/\n/g, '');
         const zone = details.split(" - ")[1];
-        const vbuckReward = $(element).find(".mission-rewards .mission-reward-name > .mission-reward-name").text();
+        const vbuckReward = $(element).find(".mission-rewards .mission-reward-name > .mission-reward-name").text().replace(/\n/g, '');
   
         const mission = new Mission(details, level, zone, vbuckReward)
         missionList.push(mission)
       })
   
-      const message = new String()
+      let message = `**Alertas do dia: ${formatDate(new Date())}\n\nTotal: ${missionList.length}**\n\n`;
 
-      message.concat(`**Alertas do dia: ${new Date().getDate()}\nTotal: ${missionList.length}**\n\n`)
-
-      missionList.forEach(mission => {
-        message.concat(`**Missão**: ${mission.getDetails}\n`)
-        message.concat(`**Zona**: ${mission.getZone}\n`)
-        message.concat(`**Level**: ${mission.getLevel}\n`)
-        message.concat(`**V-bucks**: ${mission.getReward}\n\n`)
-      })
+      missionList.forEach((mission) => {
+        message += `**Missão**: ${mission.getDetails()}\n`;
+        message += `**Zona**: ${mission.getZone()}\n`;
+        message += `**Level**: ${mission.getLevel()}\n`;
+        message += `**V-bucks**: ${mission.getReward()}\n\n`;
+      });
 
       return message
     } catch (err) {

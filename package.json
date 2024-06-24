@@ -1,20 +1,34 @@
 {
-  "name": "fortnite-alert-bot",
+  "name": "my-webpack-project",
   "version": "1.0.0",
-  "description": "",
+  "description": "My webpack project",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx ts-node app/src/main.ts",
-    "transpile": "npx tsc app/src/main.ts"
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "watch": "webpack --watch",
+    "serve": "webpack serve"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^20.14.7",
+    "@types/node": "^20.14.8",
+    "@types/uuid": "^10.0.0",
+    "@types/webpack": "^5.28.5",
+    "@webpack-cli/generators": "^3.0.7",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^12.0.2",
+    "declaration-bundler-webpack-plugin": "^1.0.3",
+    "ts-loader": "^9.5.1",
     "tslib": "^2.6.3",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.2",
+    "webpack": "^5.92.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
     "@types/node-cron": "^3.0.11",

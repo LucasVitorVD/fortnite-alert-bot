@@ -20,9 +20,9 @@ export class DiscordService {
         const channel = discordClient.channels.cache.get(process.env.DISCORD_CHANNEL_ID as string ?? "")
 
         if (channel && channel.isTextBased()) {
-          const alerts = await FortniteService.getAlerts()
+          const message = await FortniteService.getAlerts()
 
-          await channel.send(`${alerts}`)
+          await channel.send(`${message}`)
         } else {
           console.error("O canal informado não é do tipo text channel")
         }
