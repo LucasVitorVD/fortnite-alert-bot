@@ -1,7 +1,7 @@
 import axios from "axios"
 import * as cheerio from "cheerio"
-import { Mission } from "../entities/Mission"
-import { formatDate } from "../utils/utils"
+import { Mission } from "entities/Mission"
+import { formatDate } from "utils/utils"
 
 export class FortniteService {
   static async getAlerts() {
@@ -27,18 +27,22 @@ export class FortniteService {
         missionList.push(mission)
       })
   
-      let message = `**Alertas do dia: ${formatDate(new Date())}\n\nTotal: ${missionList.length}**\n\n`;
-
-      missionList.forEach((mission) => {
-        message += `**Missão**: ${mission.getDetails()}\n`;
-        message += `**Zona**: ${mission.getZone()}\n`;
-        message += `**Level**: ${mission.getLevel()}\n`;
-        message += `**V-bucks**: ${mission.getReward()}\n\n`;
-      });
-
-      return message
-    } catch (err) {
+      return this.buildMessage(missionList)
+    } catch (err: any) {
       throw new Error(`Erro ao obter missões: ${err.message}`)
     }
+  }
+
+  private static buildMessage(missionList: Mission[]) {
+    let message = `**Alertas do dia: ${formatDate(new Date())}\n\nTotal: ${missionList.length}**\n\n`;
+
+    missionList.forEach((mission) => {
+      message += `**Missão**: ${mission.getDetails()}\n`;
+      message += `**Zona**: ${mission.getZone()}\n`;
+      message += `**Level**: ${mission.getLevel()}\n`;
+      message += `**V-bucks**: ${mission.getReward()}\n\n`;
+    });
+
+    return message
   }
 }
