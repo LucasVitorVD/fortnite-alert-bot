@@ -1,6 +1,6 @@
 # 🤖 Bot do Discord
 
-Este é um bot para Discord desenvolvido em Node.js que envia uma mensagem diariamente às 21:00 em um canal específico, contendo informações de missões em um modo do jogo chamado Fortnite.
+Este é um bot para Discord desenvolvido em Node.js que envia uma mensagem diariamente às 21:05 em um canal específico, contendo informações de missões em um modo do jogo chamado Fortnite.
 
 ## 🚀 Tecnologias e Bibliotecas Utilizadas
 
@@ -12,4 +12,4 @@ Este é um bot para Discord desenvolvido em Node.js que envia uma mensagem diari
 
 ## ✨ Funcionalidades
 
-- Envia uma mensagem automática contendo dados de missões do jogo Fortnite todos os dias às 21:00 em um canal do Discord.
+- Envia uma mensagem automática contendo dados de missões do jogo Fortnite todos os dias às 21:05 em um canal do Discord.
