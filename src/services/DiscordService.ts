@@ -25,10 +25,10 @@ export class DiscordService {
           return
         }
 
-        schedule("5 21 * * *", async () => {
+        schedule('03 21 * * *', async () => {
           const message = await FortniteService.getAlerts()
 
-          await channel.send(`${message}`)
+          message !== undefined && await channel.send(`${message}`)
         })
       })
 

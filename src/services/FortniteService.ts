@@ -14,20 +14,24 @@ export class FortniteService {
       const specialMissionElement = $(".special-reward-entry .mission-entry")
   
       if (specialMissionElement.length === 0) {
-        throw new Error("Não há alertas hoje!")
+        console.warn("Não há alertas hoje!")
+
+        return
+      } else {
+        console.warn("Tem alertas hoje!")
+
+        specialMissionElement.each((_, element) => {
+          const details = $(element).find(".mission-entry .mission-details").text().replace(/\n/g, '');
+          const level = $(element).find(".mission-entry .special-overview").text().replace(/\n/g, '');
+          const zone = details.split(" - ")[1];
+          const vbuckReward = $(element).find(".mission-rewards .mission-reward-name > .mission-reward-name").text().replace(/\n/g, '');
+    
+          const mission = new Mission(details, level, zone, vbuckReward)
+          missionList.push(mission)
+        })
+
+        return this.buildMessage(missionList)
       }
-  
-      specialMissionElement.each((_, element) => {
-        const details = $(element).find(".mission-entry .mission-details").text().replace(/\n/g, '');
-        const level = $(element).find(".mission-entry .special-overview").text().replace(/\n/g, '');
-        const zone = details.split(" - ")[1];
-        const vbuckReward = $(element).find(".mission-rewards .mission-reward-name > .mission-reward-name").text().replace(/\n/g, '');
-  
-        const mission = new Mission(details, level, zone, vbuckReward)
-        missionList.push(mission)
-      })
-  
-      return this.buildMessage(missionList)
     } catch (err: any) {
       throw new Error(`Erro ao obter missões: ${err.message}`)
     }
